@@ -6,18 +6,23 @@ import Aux from "../Auxiliary/Auxiliary";
 const withErrorHandler = (WrappedComponent, axios) => {
   return class extends Component {
     state = {
-      error: null
+      error: null,
     };
 
     componentWillMount() {
-      axios.interceptors.request.use(req => {
+      this.reqIntreceptor = axios.interceptors.request.use(req => {
         this.setState({ error: null });
         return req;
       });
-      axios.interceptors.response.use(res => res, error => {
+      this.resIntreceptor = axios.interceptors.response.use(res => res, error => {
         this.setState({ error: error });
       });
     }
+
+    componentWillUnmount(){
+      axios.interceptors.request.eject(this.reqIntreceptor);
+      axios.interceptors.request.eject(this.resIntreceptor);
+    };
 
     errorConfirmedHandler = () => {
       this.setState({ error: null });
