@@ -23,7 +23,7 @@ class BurgerBuilder extends Component {
     purchasable: false,
     purchasing: false,
     loading: false,
-    error: false,
+    error: false
   };
 
   componentDidMount() {
@@ -33,7 +33,7 @@ class BurgerBuilder extends Component {
         this.setState({ ingredients: response.data });
       })
       .catch(error => {
-        this.setState({error: true})
+        this.setState({ error: true });
       });
   }
 
@@ -91,31 +91,32 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
-    //alert('You continue!')
-    this.setState({ loading: true });
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: "Kristian Slavchev",
-        address: {
-          street: "testStreeet 1",
-          zipCode: "24324",
-          country: "Bulgaria"
-        },
-        email: "test@123.bg"
-      },
-      deliveryMethod: "fastest"
-    };
+    // //alert('You continue!')
+    // this.setState({ loading: true });
+    // const order = {
+    //   ingredients: this.state.ingredients,
+    //   price: this.state.totalPrice,
+    //   customer: {
+    //     name: "Kristian Slavchev",
+    //     address: {
+    //       street: "testStreeet 1",
+    //       zipCode: "24324",
+    //       country: "Bulgaria"
+    //     },
+    //     email: "test@123.bg"
+    //   },
+    //   deliveryMethod: "fastest"
+    // };
 
-    axios
-      .post("/orders.json", order)
-      .then(response => {
-        this.setState({ loading: false, purchasing: false });
-      })
-      .catch(error => {
-        this.setState({ loading: false, purchasing: false });
-      });
+    // axios
+    //   .post("/orders.json", order)
+    //   .then(response => {
+    //     this.setState({ loading: false, purchasing: false });
+    //   })
+    //   .catch(error => {
+    //     this.setState({ loading: false, purchasing: false });
+    //   });
+    this.props.history.push("/checkout");
   };
 
   render() {
@@ -129,7 +130,11 @@ class BurgerBuilder extends Component {
 
     let orderSummary = null;
 
-    let burger = this.state.error ? <p>Ingredients can't be loaded</p> : <Spinner />;
+    let burger = this.state.error ? (
+      <p>Ingredients can't be loaded</p>
+    ) : (
+      <Spinner />
+    );
 
     if (this.state.ingredients) {
       burger = (
